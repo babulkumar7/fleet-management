@@ -13,15 +13,19 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
+import "./index.css";
+
 // import IconButton from '@mui/material/IconButton';
 // import Typography from '@mui/material/Typography';
 // import Tooltip from '@mui/material/Tooltip';
 // import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
-import PersonAdd from '@mui/icons-material/PersonAdd';
+//import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-function Header({ userDetails }) {
+import useLocalStorage from "use-local-storage";
+import { auth } from "../firebase";
+function Header({ toggleSidebar, userDetails }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -30,9 +34,23 @@ function Header({ userDetails }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handlelogout = async () => {
+    try {
+      await auth.signOut();
+      window.location.href = "/login";
+      console.log("User logged out successfully!");
+      setAnchorEl(null);
+    } catch (error) {
+    setAnchorEl(null);
+      console.error("Error logging out:", error.message);
+    }
+  };
+  const preference = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const [isDark, setIsDark] = useLocalStorage("isDark", preference);
+
   return (
     <>
-      <header className="d-flex align-items-center">
+      <header data-theme={isDark ? "dark" : "light"} className="d-flex align-items-center">
         <div className="container-fluid w-100">
           <div className="d-flex align-items-center">
             <div className="col-sm-2">
@@ -40,29 +58,28 @@ function Header({ userDetails }) {
             </div>
 
             <div className="col-sm-3 d-flex align-items-center part2 pl-4">
-              <Button className="rounded-circle mr-3"><AiOutlineMenuUnfold size={20} /></Button>
+              <Button onClick={toggleSidebar} className="rounded-circle mr-3"><AiOutlineMenuUnfold size={20} /></Button>
               <SearchBox />
             </div>
 
             <div className="col-sm-7 d-flex align-items-center justify-content-end part3 ">
-              <Button className="rounded-circle mr-4"><CiLight size={30} /></Button>
+              <Button onClick={()=>{setIsDark(!isDark)}} className="rounded-circle mr-4"><CiLight size={30} /></Button>
               <Button className="rounded-circle mr-3 "><MdDarkMode size={20} /></Button>
-              <Button className="rounded-circle mr-3"><FaShoppingCart  size={20} /></Button>
-              <Button className="rounded-circle mr-3"><MdEmail size={20} /></Button>
+              {/* <Button className="rounded-circle mr-3"><FaShoppingCart  size={20} /></Button>
+              <Button className="rounded-circle mr-3"><MdEmail size={20} /></Button> */}
               <Button className="rounded-circle mr-3"><FaBell size={20} /></Button>
               <div  >
                 <div onClick={handleClick} className="my-account d-flex align-items-center">
                   <div className="userimg">
                     <span className="rounded-circle">
                       <img
-                        alt="profileimage"
+                        alt=""
                         src={userDetails?.photo}
                       />
                     </span>
                   </div>
                   <div className="userInfo">
                     <h4> {userDetails?.firstName}</h4>
-                    <p className="mb-0">{userDetails?.email}</p>
                   </div>
                 </div>
               </div>
@@ -106,26 +123,17 @@ function Header({ userDetails }) {
                 <MenuItem onClick={handleClose}>
                   <Avatar /> Profile
                 </MenuItem>
-                {/* <MenuItem onClick={handleClose}>
-                  <Avatar /> My account
-                </MenuItem> */}
                 <MenuItem onClick={handleClose}>
                   <Avatar /> Reset Password
                 </MenuItem>
                 <Divider />
-                {/* <MenuItem onClick={handleClose}>
-                  <ListItemIcon>
-                    <PersonAdd fontSize="small" />
-                  </ListItemIcon>
-                  Add another account
-                </MenuItem> */}
                 <MenuItem onClick={handleClose}>
                   <ListItemIcon>
                     <Settings fontSize="small" />
                   </ListItemIcon>
                   Settings
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handlelogout}>
                   <ListItemIcon>
                     <Logout fontSize="small" />
                   </ListItemIcon>

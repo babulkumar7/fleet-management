@@ -1,0 +1,201 @@
+.sidebarWrapper {
+  width: 15% ;
+  flex: 0 0 15%;
+  transition: all 0.3s ease-in-out;
+
+}
+.sidebar {
+  width: 15%;
+  height: 100vh;
+  max-height: calc(100% - 70px);
+  position: fixed;
+  top: 70px;
+  left: 0;
+  background: #f0f5ff;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 40px;
+  transition: width 0.3s;
+  /* background-color: #2e3a59; */
+
+}
+
+/* Media query for smaller devices */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 40%;
+    transition: width 0.3s;
+  }
+
+ 
+
+  .sidebar.open {
+    width: 60%;
+    max-width: 300px;
+    transition: width 0.3s;
+  }
+
+  /* Adjust sidebar elements for mobile view */
+  .sidebar ul {
+    padding: 10px;
+  }
+
+  .sidebar ul li button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .sidebar ul li button .icon {
+    margin-right: 8px;
+  }
+
+  .sidebar ul li button .arrow {
+    font-size: 16px;
+  }
+}
+
+/* Hide scrollbar in the sidebar */
+.sidebar::-webkit-scrollbar {
+  width: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: transparent !important;
+}
+
+.sidebarWrapper:hover .sidebar::-webkit-scrollbar {
+  background: #0858f7 !important;
+}
+
+.sidebar ul {
+  margin-bottom: 0;
+  padding: 10px 15px;
+}
+
+.sidebar ul li {
+  list-style: none;
+}
+
+.sidebar ul li button {
+  color: #5e5d72;
+  text-align: left;
+  justify-content: left;
+  border-radius: 10px !important;
+  padding: 12px 10px !important;
+  align-items: center;
+  text-transform: capitalize !important;
+  font-weight: 700 !important;
+  font-family: 'open Sans', sans-serif !important;
+  font-size: 15px !important;
+}
+
+.sidebar ul li button * {
+  color: #45454e !important;
+}
+
+.sidebar ul li button .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+
+.sidebar ul li button:hover {
+  background: #f1f1f1 !important;
+}
+
+.sidebar ul li button.active {
+  background: #f1f1f1 !important;
+}
+
+.sidebar ul li button .icon svg {
+  color: #000;
+  opacity: 0.8;
+  font-size: 22px;
+}
+
+.sidebar ul li button .arrow {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+}
+
+.sidebar ul .submenu {
+  padding: 0px 45px;
+  position: relative;
+  transition: all 0.3s;
+  height: 0px;
+}
+
+.sidebar ul .submenu::before {
+  content: '';
+  width: 1px;
+  height: 95%;
+  position: absolute;
+  top: 0;
+  left: 30px;
+  background: #b7b7cf;
+}
+
+.sidebar ul .submenu li {
+  width: 100%;
+  list-style: none;
+}
+
+.sidebar ul .submenu li a {
+  color: #45454e !important;
+  text-decoration: none;
+  display: block;
+  padding: 5px 0;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.sidebar ul .submenu li a:hover {
+  color: #0858f7 !important;
+}
+
+.sidebar ul .submenuWrapper {
+  transition: all 0.3s;
+  height: 0px;
+  overflow: hidden;
+}
+
+.sidebar ul .submenuWrapper.colapsed .submenu {
+  opacity: 0;
+}
+
+.sidebar ul .submenuWrapper.colapse {
+  height: auto;
+  overflow: hidden;
+}
+
+.sidebar ul .submenuWrapper.colapse .submenu {
+  opacity: 1;
+  height: auto;
+}
+
+.toggle-sidebar-btn {
+  position: fixed;
+  top: 20px;
+  left: 10px;
+  background-color: #0858f7;
+  color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1000;
+}
+.sidebar.closed {
+  left: -18%;
+}
+
+.sidebar.open {
+  left: 0;
+}

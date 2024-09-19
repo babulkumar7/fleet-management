@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { db } from '../../../firebase';
 import { toast } from "react-toastify";
 import { Modal, Button, Form } from 'react-bootstrap';
+import MetaData from "../../../MetaData";
 
 const VehicleDetail = () => {
     const { id } = useParams(); // Get the vehicle ID from the URL
@@ -107,7 +108,10 @@ const VehicleDetail = () => {
     };
 
     return (
+
         <div>
+            <MetaData title='Edit Vehicle'></MetaData>
+
             <h2>Vehicle Details</h2>
 
             <div className="row g-3">
@@ -138,42 +142,42 @@ const VehicleDetail = () => {
                     />
                 </div>
                 <div class="col-md-6">
-                    <label for="inputAddress" class="form-label">License Plate Number</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="License plate number" />
+                    <label for="inputAddress" className="form-label">License Plate Number</label>
+                    <input type="text" className="form-control" id="inputAddress" placeholder="License plate number" />
                 </div>
                 <div class="col-md-6">
-                    <label for="inputAddress2" class="form-label">OwnerID</label>
-                    <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor" />
+                    <label for="inputAddress2" className="form-label">OwnerID</label>
+                    <input type="text" className="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor" />
                 </div>
                 <div class="col-md-6">
-                    <label for="inputCity" class="form-label">Manufacturer</label>
-                    <input type="text" class="form-control" placeholder="Vehicle manufacturer" id="inputCity" />
+                    <label for="inputCity" className="form-label">Manufacturer</label>
+                    <input type="text" className="form-control" placeholder="Vehicle manufacturer" id="inputCity" />
                 </div>
                 <div class="col-md-6">
-                    <label for="inputYear" class="form-label">Year of manufacture</label>
+                    <label for="inputYear" className="form-label">Year of manufacture</label>
                     <input type="number" class="form-control" id="inputYear" placeholder="Year of manufacture" />
                 </div>
                 <div class="col-md-6">
-                    <label for="inputMileage" class="form-label">Mileage</label>
-                    <input type="number" class="form-control" id="inputMileage" />
+                    <label for="inputMileage" className="form-label">Mileage</label>
+                    <input type="number" className="form-control" id="inputMileage" />
 
                 </div>
-                <div class="col-md-6">
-                    <label for="inputStatus" class="form-label">Status</label>
-                    <select id="inputStatus" class="form-select">
+                <div className="col-md-6">
+                    <label for="inputStatus" className="form-label">Status</label>
+                    <select id="inputStatus" className="form-select">
                         <option selected>Choose Status...</option>
                         <option>Active</option>
                         <option>Inactive</option>
                         <option>Maintenance</option>
                     </select>
                 </div>
-                <div class="col-md-6">
-                    <label for="inputLastServiceDate" class="form-label">Last Service Date</label>
-                    <input type="date" class="form-control" id="inputLastServiceDate" />
+                <div className="col-md-6">
+                    <label for="inputLastServiceDate" className="form-label">Last Service Date</label>
+                    <input type="date" className="form-control" id="inputLastServiceDate" />
 
-                </div>  <div class="col-md-6">
-                    <label for="inputInsuranceExpiryDate" class="form-label">Insurance Expiry Date</label>
-                    <input type="date" class="form-control" id="inputInsuranceExpiryDate" />
+                </div>  <div className="col-md-6">
+                    <label for="inputInsuranceExpiryDate" className="form-label">Insurance Expiry Date</label>
+                    <input type="date" className="form-control" id="inputInsuranceExpiryDate" />
                 </div>
 
                 {/* Other fields as needed */}

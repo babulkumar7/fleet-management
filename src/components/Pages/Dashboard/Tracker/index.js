@@ -1,152 +1,101 @@
+import React, { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
 import {
-   Box,
-   Button,
-   ButtonGroup,
-   Flex,
-   HStack,
-   IconButton,
-   Input,
-   SkeletonText,
-   Text
- } from '@chakra-ui/react'
- import { FaLocationArrow, FaTimes } from 'react-icons/fa'
- 
- import {
-   useJsApiLoader,
-   GoogleMap,
-   Marker,
-   Autocomplete,
-   DirectionsRenderer,
- } from '@react-google-maps/api'
- import { useRef, useState } from 'react'
- 
- const center = { lat: 48.8584, lng: 2.2945 }
-const Tracker =() =>{
-   
-   const { isLoaded } = useJsApiLoader({
-      googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
-      libraries: ['places'],
-    })
-  
-    const [map, setMap] = useState(/** @type google.maps.Map */ (null))
-    const [directionsResponse, setDirectionsResponse] = useState(null)
-    const [distance, setDistance] = useState('')
-    const [duration, setDuration] = useState('')
-  
-   //  /** @type React.MutableRefObject<HTMLInputElement> */
-    const originRef = useRef()
-   //  /** @type React.MutableRefObject<HTMLInputElement> */
-    const destiantionRef = useRef()
-  
-    if (!isLoaded) {
-      return <SkeletonText />
-    }
-  
-    async function calculateRoute() {
-      if (originRef.current.value === '' || destiantionRef.current.value === '') {
-        return
-      }
-      // eslint-disable-next-line no-undef
-      const directionsService = new google.maps.DirectionsService()
-      const results = await directionsService.route({
-        origin: originRef.current.value,
-        destination: destiantionRef.current.value,
-        // eslint-disable-next-line no-undef
-        travelMode: google.maps.TravelMode.DRIVING,
-      })
-      setDirectionsResponse(results)
-      setDistance(results.routes[0].legs[0].distance.text)
-      setDuration(results.routes[0].legs[0].duration.text)
-    }
-  
-    function clearRoute() {
-      setDirectionsResponse(null)
-      setDistance('')
-      setDuration('')
-      originRef.current.value = ''
-      destiantionRef.current.value = ''
-    }
-   return (
-    <>
-     <Flex
-      position='relative'
-      flexDirection='column'
-      alignItems='center'
-      h='100vh'
-      w='100vw'
-    >
-      <Box position='absolute' left={0} top={0} h='100%' w='100%'>
-    
-        <GoogleMap
-          center={center}
-          zoom={15}
-          mapContainerStyle={{ width: '100%', height: '100%' }}
-          options={{
-            zoomControl: false,
-            streetViewControl: false,
-            mapTypeControl: false,
-            fullscreenControl: false,
-          }}
-          onLoad={map => setMap(map)}
-        >
-          <Marker position={center} />
-          {directionsResponse && (
-            <DirectionsRenderer directions={directionsResponse} />
-          )}
-        </GoogleMap>
-      </Box>
-      <Box
-        p={4}
-        borderRadius='lg'
-        m={4}
-        bgColor='white'
-        shadow='base'
-        minW='container.md'
-        zIndex='1'
-      >
-        <HStack spacing={2} justifyContent='space-between'>
-          <Box flexGrow={1}>
-            <Autocomplete>
-              <Input type='text' placeholder='Origin' ref={originRef} />
-            </Autocomplete>
-          </Box>
-          <Box flexGrow={1}>
-            <Autocomplete>
-              <Input
-                type='text'
-                placeholder='Destination'
-                ref={destiantionRef}
-              />
-            </Autocomplete>
-          </Box>
+  useJsApiLoader,
+  GoogleMap,
+  Marker,
+} from '@react-google-maps/api';
+import car from '../../../../Images/vehicle.png'; // Adjust the path based on your project setup
 
-          <ButtonGroup>
-            <Button colorScheme='pink' type='submit' onClick={calculateRoute}>
-              Calculate Route
-            </Button>
-            <IconButton
-              aria-label='center back'
-              icon={<FaTimes />}
-              onClick={clearRoute}
-            />
-          </ButtonGroup>
-        </HStack>
-        <HStack spacing={4} mt={4} justifyContent='space-between'>
-          <Text>Distance: {distance} </Text>
-          <Text>Duration: {duration} </Text>
-          <IconButton
-            aria-label='center back'
-            icon={<FaLocationArrow />}
-            isRound
-            onClick={() => {
-              map.panTo(center)
-              map.setZoom(15)
-            }}
-          />
-        </HStack>
-      </Box>
-    </Flex>
-    </>
-   )
-}
-export default Tracker
+const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // Default center (San Francisco)
+//const defaultMarkerUrl = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'; // Default marker URL
+
+const Tracker = () => {
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
+    libraries: ['places'],
+  });
+
+  const [deviceDetails, setDeviceDetails] = useState({
+    batteryLevel: '',
+    distance: '',
+    totalDistance: '',
+    speed: '',
+  });
+
+  const [map, setMap] = useState(null);
+  const [deviceLocation, setDeviceLocation] = useState(defaultCenter);
+  const [zoom, setZoom] = useState(20); // Default zoom level
+  const mapRef = useRef();
+
+  useEffect(() => {
+    const fetchTraccarData = async () => {
+      try {
+        const response = await axios.get('http://demo.traccar.org/api/positions', {
+          headers: {
+            Authorization: `Bearer RzBFAiEAsuXJVLehyiS3_hXd4DJQ2Qhva6Nl21JkA_oKEtg5icMCICVCXanbuI9ykIm5XSPlJzXO9i-GJ1vuh6SQiF8tDvsLeyJ1Ijo2MDA3OSwiZSI6IjIwMjUtMDItMDVUMTg6MzA6MDAuMDAwKzAwOjAwIn0`, // Access token from .env file
+          },
+          auth: {
+            username: 'babulkumar0607@gmail.com', 
+             password: 'babul007',
+          },
+        });
+
+        if (response.data && response.data.length > 0) {
+          const position = response.data[0]; // Assuming you track only one device
+          const newLocation = { lat: position.latitude, lng: position.longitude };
+          setDeviceLocation(newLocation);
+          setDeviceDetails({
+            batteryLevel: position.attributes.batteryLevel,
+            distance: position.attributes.distance,
+            totalDistance: position.attributes.totalDistance,
+            speed: position.speed,
+          });
+
+          if (map) {
+            // Smoothly move the map to the new location
+            map.panTo(newLocation);
+          }
+        } else {
+          console.log('No device data available');
+        }
+      } catch (error) {
+        console.error('Error fetching Traccar data:', error);
+      }
+    };
+
+    // Fetch data every 5 seconds
+    const intervalId = setInterval(fetchTraccarData, 5000);
+
+    return () => clearInterval(intervalId); // Cleanup on component unmount
+  }, [map]);
+
+  if (!isLoaded) {
+    return <div>Loading Maps...</div>;
+  }
+
+  return (
+    <div style={{ display: 'flex', height: '100vh' }}>
+      <GoogleMap
+        center={deviceLocation}
+        zoom={zoom}
+        mapContainerStyle={{ width: '100%', height: '100%' }}
+        onLoad={(mapInstance) => {
+          setMap(mapInstance);
+          mapRef.current = mapInstance; // Reference map instance
+        }}
+      >
+        <Marker
+          position={deviceLocation}
+          icon={{
+            url: car, // Use a default marker URL for testing
+            scaledSize: new window.google.maps.Size(50, 50), // Adjust size as needed
+            anchor: new window.google.maps.Point(25, 50), // Adjust anchor point to fit the icon
+          }}
+        />
+      </GoogleMap>
+    </div>
+  );
+};
+
+export default Tracker;

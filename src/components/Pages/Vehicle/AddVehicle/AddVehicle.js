@@ -1,89 +1,128 @@
 import { useState } from "react";
-import { db } from '../../../firebase'; // Import db instance
-import { doc, setDoc } from 'firebase/firestore'; // Import correct Firestore functions
+import { db, storage } from '../../../firebase'; // Import Firebase db and storage
+import { collection, addDoc } from 'firebase/firestore'; // Firestore functions for db
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'; // Firebase storage functions
 import { toast } from "react-toastify";
+import MetaData from "../../../MetaData";
+import ClipLoader from "react-spinners/ClipLoader";
+
 const AddVehicle = ({ userDetails }) => {
   const [name, setName] = useState("");
   const [type, setType] = useState("");
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [loading, setLoading] = useState(false); 
 
-  // Push Function
+  // Function to handle image upload
+  const handleImageUpload = async (file) => {
+    if (!file) return;
+
+    setLoading(true);
+    const storageRef = ref(storage, `vehicleImages/${file.name}`); // Reference to Firebase storage
+
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        // Can show upload progress if needed
+      },
+      (error) => {
+        console.error("Image upload error: ", error);
+        toast.error("Error uploading image", { position: "top-center" });
+      },
+      async () => {
+        const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+        setImageUrl(downloadUrl); // Store the image URL for database
+        setLoading(false);
+      }
+    );
+  };
+
+  // Function to save vehicle data
   const savedata = async (e) => {
     e.preventDefault();
-    const data = { name: name, type: type, email: userDetails?.email };
+    setLoading(true);
+
+    const data = {
+      name: name,
+      type: type,
+      imageUrl: imageUrl, // Save the uploaded image URL
+      email: userDetails?.email,
+    };
 
     try {
-      // Create a document reference with a unique ID
-      const vehicleDocRef = doc(db, "vehicle", name); // Using name as the ID for simplicity
-      await setDoc(vehicleDocRef, data); // Set data to the document reference
+      const vehicleCollectionRef = collection(db, "vehicle"); // Reference to "vehicle" collection
+      await addDoc(vehicleCollectionRef, data);
+
       setName('');
       setType('');
-      toast.success("Vehicle added Successfully", {
-        position: "top-center",
-      });
+      setImage(null);
+      toast.success("Vehicle added successfully", { position: "top-center" });
       console.log("Vehicle added successfully");
     } catch (error) {
       console.error("Error adding document: ", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
+      <MetaData title="Add Vehicle" />
       <div>
-      <h2>New Vehicle</h2>
-      <div class="row g-3">
-        <div class="col-md-6">
-          <label for="inputEmail4" class="form-label">Vehicle Name</label>
-          <input type="text" class="form-control" id="inputEmail4" placeholder="Name or model of the vehicle" value={name} onChange={(e) => setName(e.target.value)} />
-        </div>
-        <div class="col-md-6">
-          <label for="inputPassword4" class="form-label">Vehicle Type</label>
-          <input type="text" class="form-control" id="inputPassword4" placeholder="e.g., Sedan, SUV, Truck" value={type} onChange={(e) => setType(e.target.value)} />
-        </div>
-        <div class="col-md-6">
-          <label for="inputAddress" class="form-label">License Plate Number</label>
-          <input type="text" class="form-control" id="inputAddress" placeholder="License plate number" />
-        </div>
-        <div class="col-md-6">
-          <label for="inputAddress2" class="form-label">OwnerID</label>
-          <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor" />
-        </div>
-        <div class="col-md-6">
-          <label for="inputCity" class="form-label">Manufacturer</label>
-          <input type="text" class="form-control" placeholder="Vehicle manufacturer" id="inputCity" />
-        </div>
-        <div class="col-md-6">
-          <label for="inputYear" class="form-label">Year of manufacture</label>
-          <input type="number" class="form-control" id="inputYear" placeholder="Year of manufacture" />
-        </div>
-        <div class="col-md-6">
-          <label for="inputMileage" class="form-label">Mileage</label>
-          <input type="number" class="form-control" id="inputMileage" />
-
-        </div>
-        <div class="col-md-6">
-          <label for="inputStatus" class="form-label">Status</label>
-          <select id="inputStatus" class="form-select">
-            <option selected>Choose Status...</option>
-            <option>Active</option>
-            <option>Inactive</option>
-            <option>Maintenance</option>
-          </select>
-        </div>
-        <div class="col-md-6">
-          <label for="inputLastServiceDate" class="form-label">Last Service Date</label>
-          <input type="date" class="form-control" id="inputLastServiceDate" />
-
-        </div>  <div class="col-md-6">
-          <label for="inputInsuranceExpiryDate" class="form-label">Insurance Expiry Date</label>
-          <input type="date" class="form-control" id="inputInsuranceExpiryDate" />
-        </div>
-
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary" onClick={savedata}>Save</button>
-        </div>
-      </div>
+        <h2>New Vehicle</h2>
+        {loading ? (
+          <div className="spinner-container">
+            <ClipLoader color={"#36D7B7"} loading={loading} size={50} />
+          </div>
+        ) : (
+          <form className="row g-3" onSubmit={savedata}>
+            <div className="col-md-6">
+              <label htmlFor="vehicleName" className="form-label">Vehicle Name</label>
+              <input
+                type="text"
+                className="form-control"
+                id="vehicleName"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="col-md-6">
+              <label htmlFor="vehicleType" className="form-label">Vehicle Type</label>
+              <input
+                type="text"
+                className="form-control"
+                id="vehicleType"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                required
+              />
+            </div>
+            <div className="col-md-6">
+              <label htmlFor="vehicleImage" className="form-label">Vehicle Image</label>
+              <input
+                type="file"
+                className="form-control"
+                id="vehicleImage"
+                accept="image/*"
+                onChange={(e) => {
+                  setImage(e.target.files[0]);
+                  handleImageUpload(e.target.files[0]); // Trigger image upload
+                }}
+              />
+            </div>
+            <div className="col-md-12 mt-3">
+              <button type="submit" className="btn btn-primary">
+                Add Vehicle
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </>
-  )
-}
-export default AddVehicle
+  );
+};
+
+export default AddVehicle;

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { auth, db } from "./firebase";
 import { doc, getDoc } from "firebase/firestore";
-// import InnerDashboard from "./Header/index";
-//import MainDashboard  from "./Pages/Dashboard";
-// import Header from "./Header";
-// import Sidebar from "./Sidebar";
+import MetaData from "./MetaData";
+import MainDashboard  from "./Pages/Dashboard/index";
 function Dashboard() {
   const [userDetails, setUserDetails] = useState(null);
 
@@ -29,20 +27,13 @@ function Dashboard() {
     fetchUserData();
   }, []);
 
-  // const handleLogout = async () => {
-  //   try {
-  //     await auth.signOut();
-  //     window.location.href = "/login";
-  //     console.log("User logged out successfully!");
-  //   } catch (error) {
-  //     console.error("Error logging out:", error.message);
-  //   }
-  // };
 
   return (
     <div>
+      <MetaData title='Home'></MetaData>
       {userDetails ? (
         <>
+     <MainDashboard />
           {/* <Header userDetails={userDetails} />
           <div className="main d-flex">
             <div className="sidebarWrapper">
@@ -54,14 +45,7 @@ function Dashboard() {
           </div> */}
           {/* <InnerDashboard userDetails={userDetails}/> */}
           {/* <MainDashboard userDetails={userDetails}/> */}
-          {/* <div className="display: flex; flex-direction: column; background-color: white;">
-          <AppHeader />
-      <div className="SideMenuAndPageContent">
-        <SideMenu></SideMenu>
-        <PageContent></PageContent>
-      </div>
-      <AppFooter />
-      </div> */}
+      
         </>
       ) : (
         <p>Loading...</p>

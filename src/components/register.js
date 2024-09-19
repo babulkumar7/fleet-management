@@ -1,19 +1,38 @@
 import React, { useState } from "react";
-import { auth, db } from "./firebase";
+import { auth, db, storage } from "./firebase"; // Ensure to import storage
 import { setDoc, doc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { Link } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Import Firebase Storage methods
 
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
+  const [type, setType] = useState("");
+  const [photoURL, setphotoURL] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
+      let uploadedPhotoURL = photoURL;
+
+      if (imageFile) {
+        // Upload image to Firebase Storage
+        const imageRef = ref(storage, `profile_images/${Date.now()}_${imageFile.name}`);
+        await uploadBytes(imageRef, imageFile);
+        uploadedPhotoURL = await getDownloadURL(imageRef);
+      }
+
       await createUserWithEmailAndPassword(auth, email, password);
       const user = auth.currentUser;
       if (user) {
@@ -21,7 +40,10 @@ function Register() {
           email: user.email,
           firstName: fname,
           lastName: lname,
-          photo: "",
+          photo: uploadedPhotoURL,
+          type: type,
+          role: 'Admin',
+
         });
       }
       console.log("User Registered Successfully!!");
@@ -82,6 +104,20 @@ function Register() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+      </div>
+
+      <div className="mb-3">
+        <label>Status</label>
+        <select className="form-control" onChange={(e) => setType(e.target.value)} required>
+          <option value="" disabled>Choose Type...</option>
+          <option value="Fleet">Fleet</option>
+          <option value="School">School</option>
+        </select>
+      </div>
+
+      <div className="mb-3">
+        <label>Profile Picture</label>
+        <input type="file" className="form-control" onChange={handleImageChange} />
       </div>
 
       <div className="d-grid">

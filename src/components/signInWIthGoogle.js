@@ -15,6 +15,8 @@ function SignInwithGoogle() {
           firstName: user.displayName,
           photo: user.photoURL,
           lastName: "",
+          type: 'Fleet',
+          role: 'Admin',
         });
         toast.success("User logged in Successfully", {
           position: "top-center",
