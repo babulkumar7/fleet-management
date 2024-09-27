@@ -1,0 +1,72 @@
+/* KeyIndicators.css */
+
+/* Container Styles */
+.card {
+    border-radius: 12px;
+    border: none;
+    background: #ffffff;
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  /* Title Styles */
+  .card-body h5 {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* Badge Styles */
+  .badge {
+    font-size: 1rem;
+    padding: 0.5em 0.75em;
+  }
+  
+  .badge-success {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .badge-danger {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  .badge-warning {
+    background-color: #ffc107;
+    color: #212529;
+  }
+  
+  /* Indicator Styles */
+  .indicator-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .indicator {
+    text-align: center;
+    flex: 1 1 45%;
+  }
+  
+  .indicator p {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .indicator span {
+    display: inline-block;
+    padding: 0.5em 1em;
+    border-radius: 20px;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 576px) {
+    .indicator {
+      flex: 1 1 100%;
+    }
+  }
+  

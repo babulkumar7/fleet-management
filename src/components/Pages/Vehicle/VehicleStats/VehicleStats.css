@@ -1,0 +1,71 @@
+.vehicle-stats-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-stats, .speed-time-container, .daily-stats-container {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.vehicle-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stats-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stats-item i {
+    font-size: 24px;
+    color: #6c757d;
+}
+
+.stats-item h4 {
+    margin: 0;
+    font-size: 16px;
+    color: #343a40;
+}
+
+.stats-item p {
+    margin: 0;
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.time-info {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.daily-stats-container {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.daily-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+h4 {
+    margin: 0 0 10px;
+    color: #343a40;
+}

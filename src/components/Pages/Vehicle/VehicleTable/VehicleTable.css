@@ -1,0 +1,35 @@
+/* .sidebar-container {
+    position: relative;
+}
+
+.vehicle-details {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #f9f9f9;
+    border-top: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.vehicle-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.vehicle-info p {
+    margin: 5px 0;
+    width: 48%;
+} */

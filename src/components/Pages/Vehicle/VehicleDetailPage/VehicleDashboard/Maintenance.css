@@ -1,0 +1,84 @@
+/* Maintenance.css */
+
+/* Container Styles */
+.maintenance-card {
+    border-radius: 12px;
+    border: none;
+    background: #ffffff;
+  }
+  
+  .maintenance-card .card-body {
+    padding: 1.5rem;
+  }
+  
+  /* Title Styles */
+  .maintenance-card .card-body h5 {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* Count Styles */
+  .maintenance-count {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .overdue-count {
+    font-size: 2rem;
+    color: #dc3545;
+  }
+  
+  .due-soon-count {
+    font-size: 2rem;
+    color: #ffc107;
+  }
+  
+  /* Maintenance List Styles */
+  .maintenance-list {
+    margin-top: 1rem;
+  }
+  
+  .maintenance-item {
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 0.75rem;
+    transition: background-color 0.2s;
+  }
+  
+  .maintenance-item:last-child {
+    border-bottom: none;
+  }
+  
+  .icon-wrapper {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 50%;
+  }
+  
+  .icon-brakes {
+    color: #dc3545; /* Red for overdue */
+  }
+  
+  .icon-filter {
+    color: #ffc107; /* Yellow for due soon */
+  }
+  
+  .maintenance-details h6 {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .maintenance-details p {
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+  
+  /* Hover Effect */
+  .maintenance-item:hover {
+    background-color: #f1f3f5;
+  }
+  

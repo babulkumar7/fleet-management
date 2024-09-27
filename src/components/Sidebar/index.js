@@ -18,7 +18,9 @@ const fleetmenuItems = [
     name: "Vehicle", icon: <FaBus />, link: "",
     subMenu: [
       { name: "Add Vehicle", link: "/add-vehicle" },
-      { name: "View Vehicle", link: "/view-vehicle" }
+      { name: "View Vehicle", link: "/view-vehicle" },
+      { name: "view Existing Vehicle", link: "/view-viewExistingVehicle" },
+      // { name: "view vehicleDashboard", link: "/view-vehicleDashboard" },
     ]
   },
   {

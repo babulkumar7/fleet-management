@@ -1,0 +1,122 @@
+/* VehicleDashboard.css */
+
+/* General Styles */
+.container {
+    margin-top: 20px;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Circle Styles for Vehicle Condition */
+.circle {
+    width: 100px;
+    height: 100px;
+    background: #f1f1f1;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle-inner {
+    width: 85px;
+    height: 85px;
+    background: #fff;
+    border-radius: 50%;
+    border: 5px solid #28a745;
+}
+
+/* Icon Styles */
+.vehicle-icon {
+    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge {
+    font-size: 0.9rem;
+}
+
+/* Key Indicators */
+.key-indicators .badge {
+    padding: 0.5em 0.75em;
+    font-size: 1rem;
+}
+
+/* Maintenance Styles */
+.maintenance .list-group-item {
+    border: none;
+    padding: 1em 0;
+}
+
+.maintenance .fa-wrench {
+    margin-right: 10px;
+}
+
+/* Vehicle Details Styles */
+.vehicle-details td {
+    padding: 0.75rem;
+}
+
+/* Trip Info Styles */
+.trip-info .badge-success {
+    font-size: 1rem;
+}
+
+.trip-info .btn {
+    border-radius: 20px;
+    padding: 0.5em 1.5em;
+}
+
+/* Custom Scrollbar Styles */
+.maintenance .list-group {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.maintenance .list-group::-webkit-scrollbar {
+    width: 6px;
+}
+
+.maintenance .list-group::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.maintenance .list-group::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .circle {
+        width: 80px;
+        height: 80px;
+    }
+
+    .circle-inner {
+        width: 65px;
+        height: 65px;
+    }
+
+    .vehicle-icon {
+        font-size: 1.5rem;
+    }
+
+    .trip-info .btn {
+        width: 100%;
+    }
+}

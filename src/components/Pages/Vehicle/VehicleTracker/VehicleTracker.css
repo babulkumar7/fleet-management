@@ -1,0 +1,31 @@
+.app-containers {
+    /* display: flex;
+    height: 90%; */
+    /* height: 100vh; */
+  }
+  
+  .sidebars {
+    width: 20%;
+    background: #f4f4f4;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebars ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebars li {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+
+  
+
+  

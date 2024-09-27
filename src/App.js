@@ -11,8 +11,9 @@ import { auth, db } from "./components/firebase";
 import Tracker from "./components/Pages/Dashboard/Tracker";
 import AddVehicle from "./components/Pages/Vehicle/AddVehicle/AddVehicle";
 // import ViewVehicle from "./components/Pages/Vehicle/ViewVehicle/ViewVehicle";
- import VehicleList from "./components/Pages/Vehicle/VehicleList/VehicleList";
+import ViewExistingVehicle  from "./components/Pages/Vehicle/ViewExistingVehicle/ViewExistingVehicle";
 import VehicleDetail from "./components/Pages/Vehicle/VehicleDetail";
+import VehicleDashboard from "./components/Pages/Vehicle/VehicleDetailPage/VehicleDashboard/VehicleDashboard";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import {HelmetProvider} from "react-helmet-async"
@@ -28,6 +29,7 @@ import ViewUsers from "./components/Pages/Users";
 import Reports from "./components/Pages/Reports";
 import SendSMS from "./components/Pages/SendSMS/SendSMS";
 import { doc, getDoc } from "firebase/firestore";
+import VehicleTracker from "./components/Pages/Vehicle/VehicleTracker/VehicleTracker";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -90,9 +92,13 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 {/* <Route path="/tracking" element={<Tracker />} /> */}
                 <Route path="/add-vehicle" element={<AddVehicle userDetails={userDetails} />} />
-                {/* <Route path="/view-vehicle" element={<ViewVehicle userDetails={userDetails} />} /> */}
-                <Route path="/view-vehicle" element={<VehicleList userDetails={userDetails} />} />
-                
+                <Route path="/view-viewExistingVehicle" element={<ViewExistingVehicle/>} /> 
+                {/* <Route path="/view-vehicleDashboard" element={<VehicleDashboard/>} />  */}
+                <Route path="/view-vehicleDashboard/:id" element={<VehicleDashboard />} />
+                <Route path="/vehicle-dashboard/:id" element={<VehicleDashboard />} />
+
+                {/* <Route path="/view-vehicle" element={<VehicleList userDetails={userDetails} />} />*/}
+                <Route path="/view-vehicle" element={<VehicleTracker userDetails={userDetails} />} />
                 <Route path="/vehicle/:id" element={<VehicleDetail />} />
                 {userDetails?.type ==='school'?
               <>
